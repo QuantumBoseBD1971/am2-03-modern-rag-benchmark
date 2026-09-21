@@ -4,58 +4,59 @@ This document evolves with the retrieval/RAG project.
 
 ## Problem framing
 
-Question answering is decomposed into retrieval and generation so failures can be attributed correctly.
+Question answering is decomposed into retrieval, reranking and generation so failure modes can be analysed independently.
 
-## Classical information retrieval
+## Classical and dense retrieval
 
-Phase 1 implements BM25 as the lexical baseline.
+Phase 1 establishes BM25.
 
-## Dense semantic retrieval
+Phase 2 adds sentence-transformer embeddings, cosine similarity and direct lexical-vs-semantic benchmarking.
 
-Phase 2 adds:
+## Reranking
 
-- sentence-transformer embeddings
-- L2 vector normalisation
-- cosine-similarity ranking
-- a pluggable encoder interface
-- direct lexical-vs-semantic benchmarking
+Phase 3 introduces a pluggable pairwise scoring interface and an optional cross-encoder implementation.
 
-The production model dependency is optional, while deterministic fake embeddings are used in CI tests.
+This demonstrates the difference between:
+
+- efficient first-stage retrieval
+- more expensive joint query-document scoring
+
+## Grounded RAG
+
+Retrieved passages are converted into explicitly labelled evidence chunks such as `[E1]` and `[E2]`.
+
+The generation prompt requires answers to use only supplied evidence and cite these labels.
 
 ## Evaluation
 
-Retrieval quality is measured consistently with:
+Retrieval remains evaluated with:
 
-- Recall@1 / Recall@3 / Recall@10
-- Precision@1 / Precision@3
+- Recall@K
+- Precision@K
 - Reciprocal Rank
 
-A common benchmark helper ensures BM25 and dense retrieval are compared under the same qrels.
+Phase 3 additionally introduces citation-integrity checks:
 
-## Reproducibility
+- valid cited evidence ids
+- citation precision
+- unsupported citation detection
 
-The repository separates:
+## Reproducibility and dependency isolation
 
-- deterministic local fixtures for CI
-- optional public SciFact experiments
-- optional sentence-transformer dependencies
+Cross-encoder and LLM dependencies are optional.
 
-This makes the core package testable without external model downloads.
+CI uses deterministic scorer/generator doubles, allowing the orchestration and evidence plumbing to be tested without downloading large models.
 
 ## Engineering design
 
-The dense retriever depends on a minimal encoder protocol rather than a specific framework.
-
-This makes the vector-search layer replaceable and supports future use of different embedding models or vector databases.
+Retriever, encoder, reranker and generator components use small interfaces so model implementations can be changed without rewriting the evaluation pipeline.
 
 ## Evidence still to add
 
-- cross-encoder reranking
-- retrieval-stage ablation
-- grounded generation
-- citation/evidence tracking
-- groundedness/hallucination evaluation
+- semantic groundedness evaluation
+- retrieval/generation failure taxonomy
 - experiment tracking
 - model card
 - deployment/MLOps design
+- monitoring and prompt-injection considerations
 - final reflection
