@@ -2,71 +2,40 @@
 
 A comparative information-retrieval and retrieval-augmented generation project.
 
-The project is designed to compare the evolution of retrieval systems:
+The project follows:
 
-**lexical retrieval → dense semantic retrieval → reranking → grounded RAG**
-
-The first phase establishes a measurable lexical-retrieval benchmark before introducing embeddings or language models.
+**BM25 lexical retrieval → dense semantic retrieval → reranking → grounded RAG**
 
 ## Research question
 
 > How much retrieval and answer quality is gained as we move from classical lexical search to dense retrieval, reranking and retrieval-augmented generation?
 
-## Benchmark design
+## Current retrieval layers
 
-The project separates two evaluation problems:
+### Lexical
+- BM25
+- deterministic tokenisation
 
-1. **Retrieval quality** — did the system retrieve the relevant evidence?
-2. **Answer quality** — did the generated answer stay grounded in that evidence?
-
-This separation is important because a RAG system can fail either because retrieval is poor or because generation is poorly grounded.
-
-## Phase 1 — lexical retrieval
-
-The first layer includes:
-
-- document/query abstractions
-- deterministic text normalisation
-- BM25 retrieval
-- Recall@K
-- Precision@K
-- Mean Reciprocal Rank
-- small local fixture corpus for CI
-- optional public SciFact/BEIR loader for larger experiments
-- tests and GitHub Actions CI
-
-## Later phases
-
-### Phase 2 — dense retrieval
+### Dense semantic
 - sentence-transformer embeddings
 - cosine similarity
-- vector indexing
-- lexical vs semantic comparison
+- in-memory vector index
+- pluggable encoder backend
 
-### Phase 3 — reranking and RAG
-- cross-encoder reranking
-- retrieval-stage ablation
-- grounded prompting
-- citation/evidence tracking
+### Evaluation
+- Recall@1 / @3 / @10
+- Precision@1 / @3
+- Reciprocal Rank
 
-### Phase 4 — evaluation and productionisation
-- answer groundedness
-- retrieval failure analysis
-- hallucination checks
-- experiment tracking
-- model card
-- deployment/MLOps design
-- final AM2 evidence synthesis
+The same relevance judgements are used for both retrievers.
 
 ## Quick start
 
+Core CI-safe setup:
+
 ```bash
 python -m venv .venv
-# Windows
 .venv\Scripts\activate
-# macOS/Linux
-# source .venv/bin/activate
-
 python -m pip install --upgrade pip
 pip install -e ".[dev]"
 
@@ -74,17 +43,31 @@ python scripts/run_bm25_demo.py
 pytest
 ```
 
-To use the optional public IR dataset loader:
+Dense semantic benchmark:
 
 ```bash
-pip install -e ".[data]"
-python scripts/load_scifact.py
+pip install -e ".[dense]"
+python scripts/run_dense_comparison.py
 ```
+
+Public SciFact benchmark:
+
+```bash
+pip install -e ".[data,dense]"
+python scripts/run_scifact_comparison.py
+```
+
+## Development status
+
+- **Phase 1 — complete:** BM25 and lexical IR metrics.
+- **Phase 2 — in progress:** dense embeddings and BM25-vs-semantic comparison.
+- **Phase 3 — planned:** cross-encoder reranking and grounded RAG.
+- **Phase 4 — planned:** groundedness, failure analysis, experiment tracking and MLOps.
 
 ## Responsible use
 
-This project is educational. Retrieval and RAG quality is dataset- and domain-dependent; benchmark results do not establish safe performance for high-stakes question answering.
+Retrieval quality and RAG quality are domain-dependent. This benchmark does not establish suitability for high-stakes question answering.
 
 ## Licence
 
-Code: MIT. External datasets retain their original licences and citation requirements.
+Code: MIT. External datasets/models retain their original licences.
