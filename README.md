@@ -1,43 +1,45 @@
 # AM2-03 — Modern Retrieval and RAG Benchmark
 
-A comparative information-retrieval and retrieval-augmented generation project.
+A comparative project covering:
 
-The project follows:
+**BM25 → dense retrieval → cross-encoder reranking → grounded RAG**
 
-**BM25 → dense semantic retrieval → cross-encoder reranking → grounded RAG**
-
-## Current architecture
+## Architecture
 
 ```text
 Question
-   ↓
-First-stage retrieval
-   ↓
-Candidate evidence
-   ↓
-Cross-encoder reranking
-   ↓
-[E1] [E2] [E3] context
-   ↓
-Grounded generator
-   ↓
-Answer with evidence references
+  ↓
+BM25 / dense retrieval
+  ↓
+top-N candidates
+  ↓
+cross-encoder reranking
+  ↓
+[E1] [E2] [E3]
+  ↓
+grounded generator
+  ↓
+citation + failure analysis
 ```
 
-## Implemented layers
+## Evaluation
 
-- BM25 lexical retrieval
-- sentence-transformer dense retrieval
-- cosine similarity
-- optional cross-encoder reranking
-- evidence-labelled context construction
-- optional Transformers generator
-- citation-integrity checks
-- Recall@K / Precision@K / Reciprocal Rank
+Retrieval:
+- Recall@1 / @3 / @10
+- Precision@1 / @3
+- Reciprocal Rank
+
+Grounding:
+- citation precision
+- unsupported-citation detection
+- abstention detection
+- failure taxonomy
+
+Security:
+- prompt-injection pattern detection
+- retrieved-context trust boundary documented
 
 ## Quick start
-
-CI-safe core:
 
 ```bash
 pip install -e ".[dev]"
@@ -46,30 +48,28 @@ python scripts/run_reranking_rag_demo.py
 pytest
 ```
 
-Dense retrieval:
+Optional model stacks:
 
 ```bash
 pip install -e ".[dense]"
-python scripts/run_dense_comparison.py
-```
-
-Production reranker / generator dependencies:
-
-```bash
 pip install -e ".[rerank,rag]"
 ```
 
 ## Development status
 
-- **Phase 1 — complete:** lexical retrieval.
-- **Phase 2 — complete:** dense semantic retrieval.
-- **Phase 3 — in progress:** reranking and grounded RAG.
-- **Phase 4 — planned:** groundedness/failure analysis, experiment tracking, model card and MLOps.
+- **Phase 1 — complete:** BM25 lexical retrieval
+- **Phase 2 — complete:** dense semantic retrieval
+- **Phase 3 — complete:** reranking and grounded RAG
+- **Phase 4 — complete:** failure analysis, security, experiment tracking, model card and MLOps
+
+## Documentation
+
+See `docs/` for methodology, model card, deployment/MLOps, AM2 evidence and final reflection.
 
 ## Responsible use
 
-Citation presence does not prove factual correctness. Generated answers require evidence-quality checks, semantic groundedness evaluation and domain-appropriate human oversight.
+This is an educational benchmark. Citation presence does not prove correctness, and retrieved content must be treated as untrusted input.
 
 ## Licence
 
-Code: MIT. External datasets/models retain their original licences.
+Code: MIT. External datasets and models retain their original licences.
