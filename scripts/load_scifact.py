@@ -2,7 +2,6 @@
 
 from modern_rag_benchmark.scifact import load_scifact
 
-
 if __name__ == "__main__":
     documents, queries, qrels = load_scifact()
     print(f"Documents: {len(documents)}")
