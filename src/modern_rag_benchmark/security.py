@@ -5,10 +5,10 @@ from __future__ import annotations
 import re
 
 INJECTION_PATTERNS = [
-    re.compile(r"ignore (all|any|the) previous instructions", re.I),
-    re.compile(r"system prompt", re.I),
-    re.compile(r"reveal .*instructions", re.I),
-    re.compile(r"do not follow .*instructions", re.I),
+    re.compile(r"ignore (all|any|the) previous instructions", re.IGNORECASE),
+    re.compile(r"system prompt", re.IGNORECASE),
+    re.compile(r"reveal .*instructions", re.IGNORECASE),
+    re.compile(r"do not follow .*instructions", re.IGNORECASE),
 ]
 
 
