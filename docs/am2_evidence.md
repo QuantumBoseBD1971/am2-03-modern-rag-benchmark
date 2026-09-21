@@ -2,41 +2,59 @@
 
 This document evolves with the retrieval/RAG project.
 
-## Current evidence
+## Problem framing
 
-### Problem framing
-Question answering is decomposed into evidence retrieval and answer generation.
+Question answering is decomposed into retrieval and generation so failures can be attributed correctly.
 
-### Classical information retrieval
-Phase 1 implements BM25 as an explicit lexical baseline.
+## Classical information retrieval
 
-### Evaluation
-The project measures retrieval quality with:
+Phase 1 implements BM25 as the lexical baseline.
 
-- Recall@K
-- Precision@K
+## Dense semantic retrieval
+
+Phase 2 adds:
+
+- sentence-transformer embeddings
+- L2 vector normalisation
+- cosine-similarity ranking
+- a pluggable encoder interface
+- direct lexical-vs-semantic benchmarking
+
+The production model dependency is optional, while deterministic fake embeddings are used in CI tests.
+
+## Evaluation
+
+Retrieval quality is measured consistently with:
+
+- Recall@1 / Recall@3 / Recall@10
+- Precision@1 / Precision@3
 - Reciprocal Rank
-- Mean Reciprocal Rank
 
-### Software engineering
-The repository uses typed data structures, packaged modules, unit tests and GitHub Actions CI.
+A common benchmark helper ensures BM25 and dense retrieval are compared under the same qrels.
 
-### Reproducibility
-A local fixture corpus supports deterministic CI, while an optional public benchmark loader supports larger offline experiments.
+## Reproducibility
 
-### Responsible design
-Retrieval quality is evaluated separately from generation quality so later RAG failures can be attributed to retrieval vs generation.
+The repository separates:
+
+- deterministic local fixtures for CI
+- optional public SciFact experiments
+- optional sentence-transformer dependencies
+
+This makes the core package testable without external model downloads.
+
+## Engineering design
+
+The dense retriever depends on a minimal encoder protocol rather than a specific framework.
+
+This makes the vector-search layer replaceable and supports future use of different embedding models or vector databases.
 
 ## Evidence still to add
 
-- dense semantic embeddings
-- vector similarity search
-- lexical vs semantic benchmark
 - cross-encoder reranking
 - retrieval-stage ablation
 - grounded generation
 - citation/evidence tracking
-- groundedness and hallucination evaluation
+- groundedness/hallucination evaluation
 - experiment tracking
 - model card
 - deployment/MLOps design
