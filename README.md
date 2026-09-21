@@ -4,69 +4,71 @@ A comparative information-retrieval and retrieval-augmented generation project.
 
 The project follows:
 
-**BM25 lexical retrieval → dense semantic retrieval → reranking → grounded RAG**
+**BM25 → dense semantic retrieval → cross-encoder reranking → grounded RAG**
 
-## Research question
+## Current architecture
 
-> How much retrieval and answer quality is gained as we move from classical lexical search to dense retrieval, reranking and retrieval-augmented generation?
+```text
+Question
+   ↓
+First-stage retrieval
+   ↓
+Candidate evidence
+   ↓
+Cross-encoder reranking
+   ↓
+[E1] [E2] [E3] context
+   ↓
+Grounded generator
+   ↓
+Answer with evidence references
+```
 
-## Current retrieval layers
+## Implemented layers
 
-### Lexical
-- BM25
-- deterministic tokenisation
-
-### Dense semantic
-- sentence-transformer embeddings
+- BM25 lexical retrieval
+- sentence-transformer dense retrieval
 - cosine similarity
-- in-memory vector index
-- pluggable encoder backend
-
-### Evaluation
-- Recall@1 / @3 / @10
-- Precision@1 / @3
-- Reciprocal Rank
-
-The same relevance judgements are used for both retrievers.
+- optional cross-encoder reranking
+- evidence-labelled context construction
+- optional Transformers generator
+- citation-integrity checks
+- Recall@K / Precision@K / Reciprocal Rank
 
 ## Quick start
 
-Core CI-safe setup:
+CI-safe core:
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install --upgrade pip
 pip install -e ".[dev]"
-
 python scripts/run_bm25_demo.py
+python scripts/run_reranking_rag_demo.py
 pytest
 ```
 
-Dense semantic benchmark:
+Dense retrieval:
 
 ```bash
 pip install -e ".[dense]"
 python scripts/run_dense_comparison.py
 ```
 
-Public SciFact benchmark:
+Production reranker / generator dependencies:
 
 ```bash
-pip install -e ".[data,dense]"
-python scripts/run_scifact_comparison.py
+pip install -e ".[rerank,rag]"
 ```
 
 ## Development status
 
-- **Phase 1 — complete:** BM25 and lexical IR metrics.
-- **Phase 2 — in progress:** dense embeddings and BM25-vs-semantic comparison.
-- **Phase 3 — planned:** cross-encoder reranking and grounded RAG.
-- **Phase 4 — planned:** groundedness, failure analysis, experiment tracking and MLOps.
+- **Phase 1 — complete:** lexical retrieval.
+- **Phase 2 — complete:** dense semantic retrieval.
+- **Phase 3 — in progress:** reranking and grounded RAG.
+- **Phase 4 — planned:** groundedness/failure analysis, experiment tracking, model card and MLOps.
 
 ## Responsible use
 
-Retrieval quality and RAG quality are domain-dependent. This benchmark does not establish suitability for high-stakes question answering.
+Citation presence does not prove factual correctness. Generated answers require evidence-quality checks, semantic groundedness evaluation and domain-appropriate human oversight.
 
 ## Licence
 
