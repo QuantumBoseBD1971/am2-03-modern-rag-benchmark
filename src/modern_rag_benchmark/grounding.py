@@ -6,7 +6,6 @@ import re
 
 from modern_rag_benchmark.context import EvidenceChunk
 
-
 CITATION_PATTERN = re.compile(r"\[(E\d+)\]")
 
 
