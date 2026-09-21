@@ -7,7 +7,6 @@ from typing import Protocol
 
 from modern_rag_benchmark.context import EvidenceChunk, render_context
 
-
 SYSTEM_INSTRUCTION = (
     "Answer only from the supplied evidence. "
     "If the evidence is insufficient, say that the answer is not supported. "
