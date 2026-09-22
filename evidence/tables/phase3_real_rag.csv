@@ -1,0 +1,3 @@
+query_id,answer,recall_at_1,recall_at_3,precision_at_1,reciprocal_rank,citation_precision,unsupported_citation,citation_count,abstained
+q1,[E1],1.0,1.0,1.0,1.0,1.0,False,1,False
+q2,[E2],1.0,1.0,1.0,1.0,1.0,False,1,False

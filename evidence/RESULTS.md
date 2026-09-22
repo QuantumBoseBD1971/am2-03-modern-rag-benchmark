@@ -14,6 +14,19 @@ This evidence pack was generated from executed retrieval/RAG workflows.
 - bm25: Recall@1=1.0000, Recall@3=1.0000, MRR=1.0000
 - dense_minilm: Recall@1=1.0000, Recall@3=1.0000, MRR=1.0000
 
+## Real cross-encoder + generator run
+
+- Mean Recall@1: **1.0000**
+- Mean MRR: **1.0000**
+- Mean citation precision: **1.0000**
+- Unsupported-citation rate: **0.0000**
+- Abstention rate: **0.0000**
+
+### Generated answers
+
+- q1: [E1]
+- q2: [E2]
+
 ## Evidence files
 
 - tables/phase1_bm25_demo.csv
