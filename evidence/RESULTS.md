@@ -14,18 +14,10 @@ This evidence pack was generated from executed retrieval/RAG workflows.
 - bm25: Recall@1=1.0000, Recall@3=1.0000, MRR=1.0000
 - dense_minilm: Recall@1=1.0000, Recall@3=1.0000, MRR=1.0000
 
-## Real cross-encoder + generator run
+## Public SciFact benchmark
 
-- Mean Recall@1: **1.0000**
-- Mean MRR: **1.0000**
-- Mean citation precision: **1.0000**
-- Unsupported-citation rate: **0.0000**
-- Abstention rate: **0.0000**
-
-### Generated answers
-
-- q1: [E1]
-- q2: [E2]
+- bm25: Recall@10=0.7590, Precision@3=0.2367, MRR=0.6041
+- dense_minilm: Recall@10=0.7867, Precision@3=0.2344, MRR=0.5979
 
 ## Evidence files
 
