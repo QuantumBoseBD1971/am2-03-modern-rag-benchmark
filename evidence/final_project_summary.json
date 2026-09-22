@@ -3,5 +3,5 @@
   "bm25_executed": true,
   "dense_executed": true,
   "scifact_executed": true,
-  "real_rag_executed": false
+  "real_rag_executed": true
 }
