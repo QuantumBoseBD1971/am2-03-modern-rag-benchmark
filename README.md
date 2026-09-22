@@ -73,3 +73,12 @@ This is an educational benchmark. Citation presence does not prove correctness, 
 ## Licence
 
 Code: MIT. External datasets and models retain their original licences.
+
+
+## Real experiment evidence
+
+A manual GitHub Actions workflow named **Run real RAG experiment** executes the retrieval/RAG stack and can commit a compact evidence pack under the evidence directory.
+
+The standard run covers BM25, real SentenceTransformer dense retrieval, and deterministic reranking/RAG orchestration. Optional inputs enable a real cross-encoder + Hugging Face generator run and the larger SciFact benchmark.
+
+See docs/running_real_experiment.md.
