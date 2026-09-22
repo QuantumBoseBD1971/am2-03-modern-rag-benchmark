@@ -1,0 +1,3 @@
+retriever,recall_at_1,recall_at_3,recall_at_10,precision_at_1,precision_at_3,reciprocal_rank
+bm25,1.0,1.0,1.0,1.0,0.3333333333333333,1.0
+dense_minilm,1.0,1.0,1.0,1.0,0.3333333333333333,1.0

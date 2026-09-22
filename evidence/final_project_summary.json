@@ -1,0 +1,7 @@
+{
+  "project": "am2-03-modern-rag-benchmark",
+  "bm25_executed": true,
+  "dense_executed": true,
+  "scifact_executed": false,
+  "real_rag_executed": false
+}
